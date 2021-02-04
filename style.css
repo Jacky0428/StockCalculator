@@ -1,0 +1,24 @@
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+body{
+  background: url(https://s2.best-wallpaper.net/wallpaper/iphone/2009/Purple-galaxy-stars-space_iphone_640x1136.jpg);
+  background-size: 100%;
+/*   background-color: #8B0000; */
+/*   background-color: #501B1D; */
+}
+
+
+h1, .result{
+  color: white;
+}
+
+.discount{
+  width: 80px;
+}
+
+.price, .number, .fee, .total{
+  height: 40px;
+}
