@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台股計算機</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="all.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <!-- 標題 -->
+        <h1 class="m-2 h4">台股計算機</h1>
+        <!-- 結果 -->
+        <div class="result">
+          <p class="text-center mb-0">損益 <span class="balanceRate">0</span>%</p>
+          <p class="text-center h1 balance">0</p>
+        </div>
+        <div class="list-group">
+          <!-- 設定區 -->
+          <div class="setting list-group-item">
+            <div class="row justify-content-center align-items-center">
+              <div class="col-auto me-3">
+                <div class="form-check">
+                  <input id="dayTrading" class="form-check-input" type="checkbox" checked onchange="calculateResult()">
+                  <label for="dayTrading" class="form-check-label">當沖</label>
+                </div>
+              </div>
+              <div class="col-auto pe-0">
+                <label for="discount" class="col-form-label">券商折數：</label>
+              </div>
+              <div class="col-auto ps-0 discount">
+                <input id="discount" class="form-control form-control-sm text-center" type="number" value="0.6" onchange="calculateResult()">
+              </div>
+      
+            </div>
+          </div>
+      
+          <!-- 買入 -->
+          <div class="buy list-group-item list-group-item-danger">
+            <div class="row">
+              <div class="col-2 d-flex align-items-center justify-content-center">
+                <span class="font-weight-bold h4">買入</span>
+              </div>
+              <div class="col-10 text-center">
+                <!-- 成交價 -->
+                <div class="price row align-items-center">
+                  <div class="col-4">
+                    <span for="">成交價</span>
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-minus" onclick="clickButton('buy', 'price', '-')"></i>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm text-center" type="number" placeholder="成交價" onchange="calculateResult()">
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-plus" onclick="clickButton('buy', 'price', '+')"></i>
+                  </div>
+                </div>
+                <!-- 交易張數 -->
+                <div class="number row align-items-center">
+                   <div class="col-4">
+                    <span for="">交易張數</span>
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-minus" onclick="clickButton('buy', 'number', '-')"></i>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm text-center" type="number"  placeholder="張數" value="1" onchange="changeNum('buy')">
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-plus" onclick="clickButton('buy', 'number', '+')"></i>
+                  </div>
+                </div>
+                <!-- 手續費 -->
+                <div class="fee row align-items-center">
+                   <div class="col-4">
+                    <span for="">手續費</span>
+                  </div>
+                  <div class="col-8">
+                    <span class="output">0</span>
+                  </div>
+                </div>
+                <!-- 總支出 -->
+                <div class="total row align-items-center">
+                   <div class="col-4">
+                    <span for="">總支出</span>
+                  </div>
+                  <div class="col-8">
+                    <span class="output">0</span>
+                  </div>
+                </div>
+      
+              </div>
+            </div>
+      
+          </div>
+          <!-- 賣出 -->
+          <div class="sell list-group-item list-group-item-success">
+             <div class="row">
+              <div class="col-2 d-flex align-items-center justify-content-center">
+                <span class="font-weight-bold h4">賣出</span>
+              </div>
+              <div class="col-10 text-center">
+                <!-- 成交價 -->
+                <div class="price row align-items-center">
+                  <div class="col-4">
+                    <span for="">成交價</span>
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-minus" onclick="clickButton('sell', 'price', '-')"></i>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm text-center" type="number" placeholder="成交價" onchange="calculateResult()">
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-plus" onclick="clickButton('sell', 'price', '+')"></i>
+                  </div>
+                </div>
+                <!-- 交易張數 -->
+                <div class="number row align-items-center">
+                   <div class="col-4">
+                    <span for="">交易張數</span>
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-minus" onclick="clickButton('sell', 'number', '-')"></i>
+                  </div>
+                  <div class="col-4">
+                    <input class="form-control form-control-sm text-center" type="number"  placeholder="張數" value="1" onchange="changeNum('sell')">
+                  </div>
+                  <div class="col-2">
+                    <i class="fas fa-plus" onclick="clickButton('sell', 'number', '+')"></i>
+                  </div>
+                </div>
+                <!-- 手續費 -->
+                <div class="fee row align-items-center">
+                   <div class="col-4">
+                    <span for="">手續費</span>
+                  </div>
+                  <div class="col-8">
+                    <span class="output">0</span>
+                  </div>
+                </div>
+                <!-- 交易稅 -->
+                <div class="tax row align-items-center">
+                   <div class="col-4">
+                    <span for="">交易稅</span>
+                  </div>
+                  <div class="col-8">
+                    <span class="output">0</span>
+                  </div>
+                </div>
+                <!-- 總收入 -->
+                <div class="total row align-items-center">
+                   <div class="col-4">
+                    <span for="">總收入</span>
+                  </div>
+                  <div class="col-8">
+                    <span class="output">0</span>
+                  </div>
+                </div>
+      
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      
+      </div>
+</body>
+</html>
