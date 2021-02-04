@@ -19,6 +19,6 @@ h1, .result{
   width: 80px;
 }
 
-.price, .number, .fee, .total{
+.price, .number, .fee, .tax, .total{
   height: 40px;
 }
