@@ -7,6 +7,8 @@ $(()=>{
   // if not null => set
   if(isDayTrading != null)
     $("#dayTrading").prop("checked", isDayTrading == "true");
+  if(isETF != null)
+    $("#ETF").prop("checked", isETF == "true");
   if(discount != null)
     $("#discount").val(discount);
 })
@@ -46,7 +48,7 @@ function clickButton(behavior, target, operation) {
   if (target == "number") {
     changeNum(behavior);
   } else {
-    calculateResult();
+    calculateResult(behavior);
   }
 
 }
@@ -59,17 +61,23 @@ function changeNum(behavior) {
   var another = behavior == "buy" ? "sell" : "buy";
   $(`.${another} .number input`).val(value);
   // 計算結果
-  calculateResult();
+  calculateResult(behavior);
 }
 
 // 計算結果
-function calculateResult() {
+function calculateResult(from = "null") {
+  // if buy changed, change sell
+  if(from == "buy"){
+    $(".sell .price input").val($(".buy .price input").val().trim());
+  }
+
   // get value
   var discount = $("#discount").val().trim();
   var buyPrice = $(".buy .price input").val().trim();
   var buyNumber = $(".buy .number input").val().trim();
   var sellPrice = $(".sell .price input").val().trim();
   var sellNumber = $(".sell .number input").val().trim();
+  var isETF = $("#ETF").prop("checked");
   var isDayTrading = $("#dayTrading").prop("checked");
 
   // validation
@@ -79,6 +87,7 @@ function calculateResult() {
   // save localStorage
   localStorage.setItem("stock-isDayTrading", isDayTrading);
   localStorage.setItem("stock-discount", discount);
+  localStorage.setItem("stock-isETF", isETF);
 
   // parse to number
   discount = (discount * 1).toFixed(2) * 1;
@@ -91,7 +100,7 @@ function calculateResult() {
   var buyFee = Math.round(Math.max(buyPrice * buyNumber * 0.001425 * discount * 1000, 20));
   var buyTotal = Math.round(buyPrice * buyNumber * 1000 + buyFee);
   var sellFee = Math.round(Math.max(sellPrice * sellNumber * 0.001425 * discount * 1000, 20));
-  var sellTax = Math.round(sellPrice * sellNumber * 0.003 * 1000 * (isDayTrading ? 0.5 : 1));
+  var sellTax = Math.round(sellPrice * sellNumber * 1000 * (isETF ? 0.1 : isDayTrading ? 0.15 : 0.3) / 100);
   var sellTotal = Math.round(sellPrice * sellNumber * 1000 - sellFee - sellTax);
   var balance = sellTotal - buyTotal;
   var balanceRate = (balance / buyTotal * 100).toFixed(2);
@@ -112,6 +121,10 @@ function calculateResult() {
   $(".sell .total .output").text(sellTotal);
   $(".balance").text(balance);
   $(".balanceRate").text(balanceRate);
+}
+
+function changeBuyPrice(){
+  // alert(123)
 }
 
 function fixNum(num) {
