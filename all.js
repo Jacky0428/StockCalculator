@@ -3,14 +3,12 @@ $(()=>{
   // getLocalStorage
   var isDayTrading = localStorage.getItem("stock-isDayTrading", isDayTrading);
   var discount = localStorage.getItem("stock-discount", discount);
+  var isETF = localStorage.getItem("stock-isETF", isETF);
 
-  // if not null => set
-  if(isDayTrading != null)
-    $("#dayTrading").prop("checked", isDayTrading == "true");
-  if(isETF != null)
-    $("#ETF").prop("checked", isETF == "true");
-  if(discount != null)
-    $("#discount").val(discount);
+  // set value
+  $("#dayTrading").prop("checked", isDayTrading == "true");
+  $("#ETF").prop("checked", isETF == "true");
+  $("#discount").val(discount == null ? 0.6 : discount);
 })
 
 // click 按鈕 買入或賣出的 + - 按鈕
@@ -66,6 +64,7 @@ function changeNum(behavior) {
 
 // 計算結果
 function calculateResult(from = "null") {
+
   // if buy changed, change sell
   if(from == "buy"){
     $(".sell .price input").val($(".buy .price input").val().trim());
@@ -80,14 +79,14 @@ function calculateResult(from = "null") {
   var isETF = $("#ETF").prop("checked");
   var isDayTrading = $("#dayTrading").prop("checked");
 
-  // validation
-  if ((discount == "") | (buyPrice == "") | (buyNumber == "") | (sellPrice == "") | (sellNumber == ""))
-    return null;
-
   // save localStorage
   localStorage.setItem("stock-isDayTrading", isDayTrading);
   localStorage.setItem("stock-discount", discount);
   localStorage.setItem("stock-isETF", isETF);
+
+  // validation
+  if ((discount == "") | (buyPrice == "") | (buyNumber == "") | (sellPrice == "") | (sellNumber == ""))
+    return null;
 
   // parse to number
   discount = (discount * 1).toFixed(2) * 1;
