@@ -59,7 +59,7 @@ function changeNum(behavior) {
   var another = behavior == "buy" ? "sell" : "buy";
   $(`.${another} .number input`).val(value);
   // 計算結果
-  calculateResult(behavior);
+  calculateResult();
 }
 
 // 計算結果
